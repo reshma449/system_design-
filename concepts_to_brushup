@@ -1,0 +1,55 @@
+Systems design is the use of computer engineering principles to build large scale distributed systems. 
+It involves converting business problems and requirements into technical solutions. 
+Senior engineers use system design patterns to make reliable, scalable and maintainable systems.
+
+Vertical scaling - optimise precision and increase through put with the same resources
+Preprocessing using cron jobs:prepare before hand during non peak hours 
+Backup servers: avoid single point of failure
+Horizontal scaling:get more resources 
+Microservices
+Distributed Systems
+Load Balancing
+Decoupling
+Logging and metrics calculation
+Extensibility
+Low-level system design
+
+Horizontal vs. Vertical Scaling
+Horizontal scaling is adding more machines to deal with increasing requirements. 
+Horizontal Scaliing (Multiple servers)
+1. Load Balancing Required
+2. Resilient
+3. Network call (RPC - Remote Procedure Call)
+4. Data Inconsistency
+5. Scales well as users increase
+These machines handle requests in parallel to improve user experience. 
+  
+Vertical scaling is replacing the current machines with more advanced machines to improve throughput and hence response time. 
+Vertical Scaliing (Single server)
+1. N/A (no Load Balancing)
+2. Single point of failure
+3. Inter process communication
+4. Consistent
+5. Hardware Limit
+
+Load Balancing:distributing incoming network traffic or computational workload across multiple servers or resources efficiently.
+One simple way would be hashing all requests and then sending them to the assigned server.
+The standard way to hash objects is to map them to a search space and then transfer the load to the mapped computer. A system using this policy is likely to suffer when new nodes are added or removed from it. 
+
+What is DATABASE SHARDING?
+database architecture pattern used to horizontally partition data across multiple database instances, or shards, to improve performance, scalability, and reliability
+* One problem is that you have to split the database somehow. What do you split on?
+database management system (DBMS) uses a sharding key (a specific attribute of the data) to determine which shard the data should reside on. For example, a user ID or a customer region might be used as a sharding key
+* You only shard shards when the shard grow too big.
+* When shard fails you use the master/slave architecture. Writes always go to master, reads are distributed across the slaves. When the master fails one of the slaves become master.
+
+
+Questions:
+1) Design an email service like Gmail
+2) Design a rate limiter
+3) Design an audio search engine
+4) Design a calling app like WhatsApp
+5) Design and code a payment tracking app like Splitwise
+6) Machine coding a cache
+7) Low-level design of an event bus
+  

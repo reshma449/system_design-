@@ -1,0 +1,61 @@
+Databases with heavy write workloads need write friendly architectures. Log Structured Merge Trees are an efficient alternative to B+ trees, as they scale writes better.
+database optimization from write and read perspective...always thought abt query optimzation
+
+1. Taking snapshots at regular intervals of the db is one way to avoid the single point of failure.
+2. Log reconstruction is one more way. Before writing to the db first flush to a log file. So if the db crashes the log file can be used to restore the db.
+3. I think when you talk about the databases communicating with each other , you mean there is an API that sits in front of them and these API's communicate with each other.
+Or is it that there is an API in front of the db which writes to a queue and another process that polls the queue and talks to the second db.
+4. One way to deal with the split brain problem is through the paxos algorithm.
+ 
+
+Content Delivery Networks
+They are a bunch of servers spread across the globe to serve information. These networks are available on rent to deliver static content quickly to nearby users.
+Some examples of CDNs are Amazon CloudFront and the Akamai CDN. They are (relatively) cheap to rent and have high availability. They also provide pluggable algorithms to invalidate and fetch data.
+We discuss why content delivery networks are useful, and how they serve data with examples.
+
+Heartbeats in microservices & service discovery 
+Servers crash due to various reasons like hardware faults and software bugs. Service Discovery and Health Checks are essential for maintaining a service ecosystem's availability and reliability. We talk about how a heartbeat service can be used to maintain system state and help the load balancer decide where to direct requests. Now when a server crashes, the heartbeat service and identify and restart the service immediately on the server.
+Service Discovery is another important part of deploying and maintaining systems. The load balancer is able to adapt request routing. Both features allow the system to report and heal issues efficiently.
+
+Distributed Consensus:
+Distributed consensus and data replication strategies are crucial in distributed systems to ensure data consistency, fault tolerance, and reliability. These strategies allow multiple servers or nodes to agree on the state of the system and maintain consistent copies of data across nodes, even in the presence of failures.
+Goal: To achieve agreement among a group of distributed nodes on a single value or state, even if some nodes or components fail.
+Paxos: One of the oldest and most well-known consensus algorithms. It ensures that a majority of nodes agree on a proposed value, and once consensus is reached, the system cannot revert to an earlier state.
+Raft: A simpler and more understandable alternative to Paxos. It uses a leader-based approach where one node (the leader) is responsible for coordinating changes to the state. Followers replicate these changes. If the leader fails, a new leader is elected.
+Zookeeper Atomic Broadcast (ZAB): An implementation used by Apache ZooKeeper. It provides a consensus protocol similar to Paxos, ensuring that nodes agree on the order of operations.
+
+Data Replication:
+To maintain multiple copies of the same data across different nodes to ensure data availability, fault tolerance, and faster read performance.
+Synchronous Replication:
+Changes to data are propagated to all replicas before the transaction is considered complete.
+Pros: Guarantees strong consistency since all nodes have the same data.
+Cons: Higher latency because the system waits for all replicas to acknowledge the update before completing the operation.
+
+Replication Models:
+Leader-Follower (Master-Slave):
+A leader node handles all write operations and propagates changes to follower nodes.
+Follower nodes replicate the leader's state but may be slightly behind.
+
+Multi-Leader (Multi-Master):
+Multiple nodes can accept write operations and propagate changes to each other. This model improves availability and write throughput.
+Conflict resolution mechanisms are needed to handle concurrent writes.
+
+Quorum-Based Replication:
+A majority (quorum) of nodes must acknowledge a write before it is considered complete. This balances consistency and availability, as a quorum ensures data agreement while tolerating a certain number of failures.
+
+Eventual Consistency:
+In some distributed systems (e.g., DynamoDB or Cassandra), updates are asynchronously propagated, and the system guarantees that all nodes will eventually converge to the same state.
+This model sacrifices immediate consistency (as in synchronous replication) for higher availability and performance.
+
+what if we Combine Distributed Consensus and Data Replication
+Consistency Across Nodes:
+Distributed systems often use consensus algorithms (e.g., Raft or Paxos) in combination with data replication to maintain a consistent and fault-tolerant state.
+Consensus ensures that all nodes agree on the sequence of changes (transactions), while replication ensures that the data itself is propagated and stored on multiple nodes.
+Fault Tolerance:
+If a leader fails in a consensus protocol (e.g., Raft), a new leader is elected to continue coordinating data updates and replication.
+Replication ensures that even if a few nodes fail, the data is still available on other nodes.
+Examples of Systems Using These Strategies
+Apache Kafka: Uses leader-based replication with a configurable number of replicas to achieve high availability and durability. It relies on Zookeeper (which uses ZAB) to manage partition leaders and maintain consensus on state.
+Apache Cassandra: Utilizes an eventual consistency model where data is asynchronously replicated across nodes, but quorum-based consistency levels can be configured for more stringent consistency guarantees.
+Google Spanner: Uses the Paxos protocol for consensus to provide synchronous, strongly consistent replication across globally distributed data centers.
+
